@@ -46,22 +46,14 @@ export default function App() {
   }, []);
 
   const onSwipe = useCallback(ev => {
-    switch (ev.type) {
-      case "swipeleft":
-        changeDirection(-1);
-        break;
-      case "swiperight":
-        changeDirection(1);
-        break;
-      case "swipeup":
-        changeDirection(-20);
-        break;
-      case "swipedown":
-        changeDirection(20);
-        break;
-      default:
-        break;
-    }
+    // @ts-ignore
+    const swipeKey = {
+      swipeleft: -1,
+      swiperight: 1,
+      swipeup: -20,
+      swipedown: 20
+    }[ev.type];
+    changeDirection(swipeKey);
   }, []);
 
   //绑定swipe事件
@@ -111,14 +103,6 @@ export default function App() {
         (direction.current === 1 && n.current % 20 === 0) ||
         (direction.current === -1 && n.current % 20 === 19)
       ) {
-        console.log(
-          snake.current.indexOf(n.current, 1) > 0,
-          n.current < 0,
-          n.current > 399,
-          direction.current === 1 && n.current % 20 === 0,
-          direction.current === -1 && n.current % 20 === 19
-        );
-        console.log(n.current, snake.current[0], direction.current);
         //if语句判断贪吃蛇是否撞到自己或者墙壁，碰到时返回，结束程序
         handleGame(false, "GAME OVER!");
         return;
@@ -140,7 +124,6 @@ export default function App() {
       }
     }
   };
-
   return (
     <>
       <canvas ref={snakeRef}>对不起，您的浏览器不支持canvas</canvas>
